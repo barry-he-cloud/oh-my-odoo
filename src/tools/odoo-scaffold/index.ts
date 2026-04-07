@@ -1,0 +1,1 @@
+export { createOdooScaffoldTool } from "./tools"

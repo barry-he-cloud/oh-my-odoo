@@ -1,0 +1,1 @@
+export { createOdooConfigValidator } from "./tools"

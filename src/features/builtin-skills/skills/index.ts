@@ -1,0 +1,31 @@
+import type { BuiltinSkill } from "../types"
+import { odooOrmExpertSkill } from "./odoo-orm-expert"
+import { odooViewsXmlSkill } from "./odoo-views-xml"
+import { odooSecuritySkill } from "./odoo-security"
+import { odooUpgradeAnalysisSkill } from "./odoo-upgrade-analysis"
+import { odooDebuggingSkill } from "./odoo-debugging"
+import { odooPerformanceSkill } from "./odoo-performance"
+import { odooTestingSkill } from "./odoo-testing"
+import { odooApiIntegrationSkill } from "./odoo-api-integration"
+
+export const builtinSkills: BuiltinSkill[] = [
+  odooOrmExpertSkill,
+  odooViewsXmlSkill,
+  odooSecuritySkill,
+  odooUpgradeAnalysisSkill,
+  odooDebuggingSkill,
+  odooPerformanceSkill,
+  odooTestingSkill,
+  odooApiIntegrationSkill,
+]
+
+export {
+  odooOrmExpertSkill,
+  odooViewsXmlSkill,
+  odooSecuritySkill,
+  odooUpgradeAnalysisSkill,
+  odooDebuggingSkill,
+  odooPerformanceSkill,
+  odooTestingSkill,
+  odooApiIntegrationSkill,
+}

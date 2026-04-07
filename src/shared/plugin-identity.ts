@@ -1,0 +1,5 @@
+export const PLUGIN_NAME = "oh-my-odoo"
+export const PLUGIN_VERSION = "0.1.0"
+export const CONFIG_BASENAME = "oh-my-odoo"
+export const LOG_FILENAME = "oh-my-odoo.log"
+export const CACHE_DIR_NAME = "oh-my-odoo"
