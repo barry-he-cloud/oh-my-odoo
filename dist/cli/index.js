@@ -1,5 +1,6 @@
 #!/usr/bin/env bun
 // @bun
+import { createRequire } from "node:module";
 var __create = Object.create;
 var __getProtoOf = Object.getPrototypeOf;
 var __defProp = Object.defineProperty;
@@ -31,7 +32,7 @@ var __toESM = (mod, isNodeMode, target) => {
   return to;
 };
 var __commonJS = (cb, mod) => () => (mod || cb((mod = { exports: {} }).exports, mod), mod.exports);
-var __require = import.meta.require;
+var __require = /* @__PURE__ */ createRequire(import.meta.url);
 
 // node_modules/commander/lib/error.js
 var require_error = __commonJS((exports) => {
@@ -753,11 +754,11 @@ var require_suggestSimilar = __commonJS((exports) => {
 
 // node_modules/commander/lib/command.js
 var require_command = __commonJS((exports) => {
-  var EventEmitter = __require("events").EventEmitter;
-  var childProcess = __require("child_process");
-  var path = __require("path");
-  var fs = __require("fs");
-  var process2 = __require("process");
+  var EventEmitter = __require("node:events").EventEmitter;
+  var childProcess = __require("node:child_process");
+  var path = __require("node:path");
+  var fs = __require("node:fs");
+  var process2 = __require("node:process");
   var { Argument, humanReadableArgName } = require_argument();
   var { CommanderError } = require_error();
   var { Help, stripColor } = require_help();
@@ -2273,14 +2274,18 @@ var {
 // src/shared/plugin-identity.ts
 var PLUGIN_NAME = "oh-my-odoo";
 var PLUGIN_VERSION = "0.1.0";
-var CONFIG_BASENAME = "oh-my-odoo";
 
 // src/cli/cli-installer.ts
 var import_picocolors2 = __toESM(require_picocolors(), 1);
 
+// src/shared/plugin-identity.ts
+var PLUGIN_NAME2 = "oh-my-odoo";
+var PLUGIN_VERSION2 = "0.1.0";
+var CONFIG_BASENAME = "oh-my-odoo";
+
 // src/cli/config-manager/detect-current-config.ts
-import { existsSync, readFileSync, readdirSync } from "fs";
-import { join } from "path";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 function detectOdooVersion(projectRoot) {
   const releasePy = join(projectRoot, "odoo", "release.py");
   if (existsSync(releasePy)) {
@@ -2358,18 +2363,18 @@ function detectCurrentConfig(projectRoot) {
       const content = readFileSync(opencodeConfigPath, "utf-8");
       const config = JSON.parse(content);
       const plugins = config.plugin ?? config.plugins ?? [];
-      result.isInstalled = plugins.some((p) => p === PLUGIN_NAME || p.startsWith(`${PLUGIN_NAME}@`) || p.includes("oh-my-odoo"));
+      result.isInstalled = plugins.some((p) => p === PLUGIN_NAME2 || p.startsWith(`${PLUGIN_NAME2}@`) || p.includes("oh-my-odoo"));
     } catch {}
   }
   return result;
 }
 // src/cli/config-manager/add-plugin-to-opencode-config.ts
-import { existsSync as existsSync2, mkdirSync, readFileSync as readFileSync2, writeFileSync } from "fs";
-import { join as join2 } from "path";
+import { existsSync as existsSync2, mkdirSync, readFileSync as readFileSync2, writeFileSync } from "node:fs";
+import { join as join2 } from "node:path";
 async function addPluginToOpenCodeConfig(version) {
   const configDir = join2(process.cwd(), ".opencode");
   const configPath = join2(configDir, "opencode.json");
-  const pluginEntry = `${PLUGIN_NAME}@${version}`;
+  const pluginEntry = `${PLUGIN_NAME2}@${version}`;
   try {
     if (!existsSync2(configDir)) {
       mkdirSync(configDir, { recursive: true });
@@ -2383,7 +2388,7 @@ async function addPluginToOpenCodeConfig(version) {
     const content = readFileSync2(configPath, "utf-8");
     const config = JSON.parse(content);
     const plugins = config.plugin ?? config.plugins ?? [];
-    const filtered = plugins.filter((p) => p !== PLUGIN_NAME && !p.startsWith(`${PLUGIN_NAME}@`) && !p.includes("oh-my-odoo"));
+    const filtered = plugins.filter((p) => p !== PLUGIN_NAME2 && !p.startsWith(`${PLUGIN_NAME2}@`) && !p.includes("oh-my-odoo"));
     filtered.push(pluginEntry);
     config.plugin = filtered;
     delete config.plugins;
@@ -2399,8 +2404,8 @@ async function addPluginToOpenCodeConfig(version) {
   }
 }
 // src/cli/config-manager/write-config.ts
-import { existsSync as existsSync3, mkdirSync as mkdirSync2, writeFileSync as writeFileSync2 } from "fs";
-import { join as join3 } from "path";
+import { existsSync as existsSync3, mkdirSync as mkdirSync2, writeFileSync as writeFileSync2 } from "node:fs";
+import { join as join3 } from "node:path";
 function generateConfigContent(config) {
   const result = {
     odoo: {
@@ -2425,7 +2430,7 @@ function writeOdooConfig(config) {
     const content = generateConfigContent(config);
     const jsonStr = JSON.stringify(content, null, 2);
     const commented = `// oh-my-odoo configuration
-// Docs: https://github.com/barry-he-cloud/oh-my-odoo#\u914D\u7F6E\u8BF4\u660E
+// Docs: https://github.com/barry-he-cloud/oh-my-odoo#配置说明
 ${jsonStr}
 `;
     writeFileSync2(configPath, commented);
@@ -2439,7 +2444,7 @@ ${jsonStr}
   }
 }
 // src/cli/config-manager/opencode-binary.ts
-import { execSync } from "child_process";
+import { execSync } from "node:child_process";
 async function isOpenCodeInstalled() {
   try {
     execSync("opencode --version", { stdio: "pipe", timeout: 1e4 });
@@ -2459,16 +2464,16 @@ async function getOpenCodeVersion() {
 // src/cli/install-validators.ts
 var import_picocolors = __toESM(require_picocolors(), 1);
 var SYMBOLS = {
-  check: import_picocolors.default.green("\u2713"),
-  cross: import_picocolors.default.red("\u2717"),
-  warn: import_picocolors.default.yellow("\u26A0"),
-  arrow: "\u2192",
-  bullet: "\u2022",
-  star: "\u2605"
+  check: import_picocolors.default.green("✓"),
+  cross: import_picocolors.default.red("✗"),
+  warn: import_picocolors.default.yellow("⚠"),
+  arrow: "→",
+  bullet: "•",
+  star: "★"
 };
 function printHeader(isUpdate) {
   console.log();
-  console.log(import_picocolors.default.bold(import_picocolors.default.cyan(isUpdate ? "  oh-my-odoo \u2014 Update Configuration" : "  oh-my-odoo \u2014 Installation")));
+  console.log(import_picocolors.default.bold(import_picocolors.default.cyan(isUpdate ? "  oh-my-odoo — Update Configuration" : "  oh-my-odoo — Installation")));
   console.log(import_picocolors.default.dim("  The Best AI Agent Harness for Odoo"));
   console.log();
 }
@@ -2492,12 +2497,12 @@ function printBox(content, title) {
   if (title) {
     console.log(`  ${import_picocolors.default.bold(import_picocolors.default.cyan(title))}`);
   }
-  console.log(`  \u250C${"\u2500".repeat(56)}\u2510`);
+  console.log(`  ┌${"─".repeat(56)}┐`);
   for (const line of content.split(`
 `)) {
-    console.log(`  \u2502 ${line.padEnd(55)}\u2502`);
+    console.log(`  │ ${line.padEnd(55)}│`);
   }
-  console.log(`  \u2514${"\u2500".repeat(56)}\u2518`);
+  console.log(`  └${"─".repeat(56)}┘`);
   console.log();
 }
 function validateNonTuiArgs(args) {
@@ -2551,12 +2556,12 @@ async function runCliInstaller(args, version) {
   const validation = validateNonTuiArgs(args);
   if (!validation.valid) {
     printHeader(false);
-    printError("\u53C2\u6570\u9A8C\u8BC1\u5931\u8D25:");
+    printError("参数验证失败:");
     for (const err of validation.errors) {
       console.log(`  ${SYMBOLS.bullet} ${err}`);
     }
     console.log();
-    printInfo(`\u7528\u6CD5: bunx ${PLUGIN_NAME} install --no-tui --odoo-version=17.0 --edition=community`);
+    printInfo(`用法: bunx ${PLUGIN_NAME2} install --no-tui --odoo-version=17.0 --edition=community`);
     console.log();
     return 1;
   }
@@ -2565,60 +2570,60 @@ async function runCliInstaller(args, version) {
   printHeader(isUpdate);
   const totalSteps = 4;
   let step = 1;
-  printStep(step++, totalSteps, "\u68C0\u67E5 OpenCode \u5B89\u88C5\u72B6\u6001...");
+  printStep(step++, totalSteps, "检查 OpenCode 安装状态...");
   const installed = await isOpenCodeInstalled();
   const openCodeVersion = await getOpenCodeVersion();
   if (!installed) {
-    printWarning("OpenCode \u672A\u627E\u5230\u3002\u63D2\u4EF6\u914D\u7F6E\u5C06\u88AB\u521B\u5EFA\uFF0C\u4F46\u4F60\u9700\u8981\u5148\u5B89\u88C5 OpenCode \u624D\u80FD\u4F7F\u7528\u3002");
-    printInfo("\u5B89\u88C5: bun install -g opencode-ai | \u6587\u6863: https://opencode.ai/docs");
+    printWarning("OpenCode 未找到。插件配置将被创建，但你需要先安装 OpenCode 才能使用。");
+    printInfo("安装: bun install -g opencode-ai | 文档: https://opencode.ai/docs");
   } else {
-    printSuccess(`OpenCode ${openCodeVersion ?? ""} \u5DF2\u5B89\u88C5`);
+    printSuccess(`OpenCode ${openCodeVersion ?? ""} 已安装`);
   }
-  printStep(step++, totalSteps, "\u68C0\u6D4B Odoo \u9879\u76EE...");
+  printStep(step++, totalSteps, "检测 Odoo 项目...");
   if (detected.hasOdooBin || detected.customModuleCount > 0) {
-    printSuccess(`\u68C0\u6D4B\u5230 Odoo \u9879\u76EE: ${detected.odooVersion ?? "\u672A\u77E5\u7248\u672C"}, ${detected.customModuleCount} \u4E2A\u81EA\u5B9A\u4E49\u6A21\u5757`);
+    printSuccess(`检测到 Odoo 项目: ${detected.odooVersion ?? "未知版本"}, ${detected.customModuleCount} 个自定义模块`);
   } else {
-    printInfo("\u672A\u68C0\u6D4B\u5230 Odoo \u9879\u76EE\uFF08\u5C06\u4F7F\u7528\u9ED8\u8BA4\u914D\u7F6E\uFF09");
+    printInfo("未检测到 Odoo 项目（将使用默认配置）");
   }
   const config = argsToConfig(args);
-  printStep(step++, totalSteps, `\u6CE8\u518C ${PLUGIN_NAME} \u63D2\u4EF6...`);
+  printStep(step++, totalSteps, `注册 ${PLUGIN_NAME2} 插件...`);
   const pluginResult = await addPluginToOpenCodeConfig(version);
   if (!pluginResult.success) {
-    printError(`\u6CE8\u518C\u5931\u8D25: ${pluginResult.error}`);
+    printError(`注册失败: ${pluginResult.error}`);
     return 1;
   }
-  printSuccess(`\u63D2\u4EF6${isUpdate ? "\u5DF2\u66F4\u65B0" : "\u5DF2\u6CE8\u518C"} ${SYMBOLS.arrow} ${import_picocolors2.default.dim(pluginResult.configPath)}`);
-  printStep(step++, totalSteps, `\u5199\u5165 ${PLUGIN_NAME} \u914D\u7F6E\u6587\u4EF6...`);
+  printSuccess(`插件${isUpdate ? "已更新" : "已注册"} ${SYMBOLS.arrow} ${import_picocolors2.default.dim(pluginResult.configPath)}`);
+  printStep(step++, totalSteps, `写入 ${PLUGIN_NAME2} 配置文件...`);
   const configResult = writeOdooConfig(config);
   if (!configResult.success) {
-    printError(`\u5199\u5165\u5931\u8D25: ${configResult.error}`);
+    printError(`写入失败: ${configResult.error}`);
     return 1;
   }
-  printSuccess(`\u914D\u7F6E\u5DF2\u5199\u5165 ${SYMBOLS.arrow} ${import_picocolors2.default.dim(configResult.configPath)}`);
-  printBox(formatConfigSummary(config), isUpdate ? "\u66F4\u65B0\u5B8C\u6210" : "\u5B89\u88C5\u5B8C\u6210");
-  console.log(`${SYMBOLS.star} ${import_picocolors2.default.bold(import_picocolors2.default.green(isUpdate ? "\u914D\u7F6E\u66F4\u65B0\u6210\u529F\uFF01" : "\u5B89\u88C5\u6210\u529F\uFF01"))}`);
-  console.log(`  \u8FD0\u884C ${import_picocolors2.default.cyan("opencode")} \u5F00\u59CB\u4F7F\u7528\uFF01`);
+  printSuccess(`配置已写入 ${SYMBOLS.arrow} ${import_picocolors2.default.dim(configResult.configPath)}`);
+  printBox(formatConfigSummary(config), isUpdate ? "更新完成" : "安装完成");
+  console.log(`${SYMBOLS.star} ${import_picocolors2.default.bold(import_picocolors2.default.green(isUpdate ? "配置更新成功！" : "安装成功！"))}`);
+  console.log(`  运行 ${import_picocolors2.default.cyan("opencode")} 开始使用！`);
   console.log();
-  printBox(`\u53EF\u7528\u7684 Odoo \u4E13\u5C5E\u5DE5\u5177:
-` + `  odoo_module_scanner   - \u626B\u63CF\u6240\u6709\u81EA\u5B9A\u4E49\u6A21\u5757
-` + `  odoo_upgrade_analyze  - \u7248\u672C\u5347\u7EA7\u517C\u5BB9\u6027\u5206\u6790 (14\u219219)
-` + `  odoo_security_checker - \u5B89\u5168\u5BA1\u8BA1
-` + `  odoo_scaffold         - \u751F\u6210\u65B0\u6A21\u5757\u9AA8\u67B6
-` + `  odoo_config_validator - \u9A8C\u8BC1 odoo.conf
-` + `  odoo_xml_validator    - XML \u89C6\u56FE\u9A8C\u8BC1`, "\u53EF\u7528\u5DE5\u5177");
+  printBox(`可用的 Odoo 专属工具:
+` + `  odoo_module_scanner   - 扫描所有自定义模块
+` + `  odoo_upgrade_analyze  - 版本升级兼容性分析 (14→19)
+` + `  odoo_security_checker - 安全审计
+` + `  odoo_scaffold         - 生成新模块骨架
+` + `  odoo_config_validator - 验证 odoo.conf
+` + `  odoo_xml_validator    - XML 视图验证`, "可用工具");
   return 0;
 }
 
 // node_modules/@clack/prompts/dist/index.mjs
-import { stripVTControlCharacters as S2 } from "util";
+import { stripVTControlCharacters as S2 } from "node:util";
 
 // node_modules/@clack/core/dist/index.mjs
 var import_sisteransi = __toESM(require_src(), 1);
 var import_picocolors3 = __toESM(require_picocolors(), 1);
-import { stdin as j, stdout as M } from "process";
-import * as g from "readline";
-import O from "readline";
-import { Writable as X } from "stream";
+import { stdin as j, stdout as M } from "node:process";
+import * as g from "node:readline";
+import O from "node:readline";
+import { Writable as X } from "node:stream";
 function DD({ onlyFirst: e = false } = {}) {
   const t = ["[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?(?:\\u0007|\\u001B\\u005C|\\u009C))", "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]))"].join("|");
   return new RegExp(t, e ? undefined : "g");
@@ -2738,7 +2743,7 @@ function rD() {
   }, enumerable: false }, rgbToAnsi: { value: (u, t, F) => r.ansi256ToAnsi(r.rgbToAnsi256(u, t, F)), enumerable: false }, hexToAnsi: { value: (u) => r.ansi256ToAnsi(r.hexToAnsi256(u)), enumerable: false } }), r;
 }
 var ED = rD();
-var d = new Set(["\x1B", "\x9B"]);
+var d = new Set(["\x1B", ""]);
 var oD = 39;
 var y = "\x07";
 var V = "[";
@@ -3038,7 +3043,7 @@ class RD extends x {
     if (this.state === "submit")
       return this.value;
     if (this.cursor >= this.value.length)
-      return `${this.value}\u2588`;
+      return `${this.value}█`;
     const u = this.value.slice(0, this.cursor), [t, ...F] = this.value.slice(this.cursor);
     return `${u}${import_picocolors3.default.inverse(t)}${F.join("")}`;
   }
@@ -3055,33 +3060,33 @@ class RD extends x {
 // node_modules/@clack/prompts/dist/index.mjs
 var import_picocolors4 = __toESM(require_picocolors(), 1);
 var import_sisteransi2 = __toESM(require_src(), 1);
-import y2 from "process";
+import y2 from "node:process";
 function ce() {
   return y2.platform !== "win32" ? y2.env.TERM !== "linux" : !!y2.env.CI || !!y2.env.WT_SESSION || !!y2.env.TERMINUS_SUBLIME || y2.env.ConEmuTask === "{cmd::Cmder}" || y2.env.TERM_PROGRAM === "Terminus-Sublime" || y2.env.TERM_PROGRAM === "vscode" || y2.env.TERM === "xterm-256color" || y2.env.TERM === "alacritty" || y2.env.TERMINAL_EMULATOR === "JetBrains-JediTerm";
 }
 var V2 = ce();
 var u = (t, n) => V2 ? t : n;
-var le = u("\u25C6", "*");
-var L2 = u("\u25A0", "x");
-var W2 = u("\u25B2", "x");
-var C = u("\u25C7", "o");
-var ue = u("\u250C", "T");
-var o = u("\u2502", "|");
-var d2 = u("\u2514", "\u2014");
-var k2 = u("\u25CF", ">");
-var P2 = u("\u25CB", " ");
-var A2 = u("\u25FB", "[\u2022]");
-var T = u("\u25FC", "[+]");
-var F = u("\u25FB", "[ ]");
-var $e = u("\u25AA", "\u2022");
-var _2 = u("\u2500", "-");
-var me = u("\u256E", "+");
-var de = u("\u251C", "+");
-var pe = u("\u256F", "+");
-var q = u("\u25CF", "\u2022");
-var D = u("\u25C6", "*");
-var U = u("\u25B2", "!");
-var K2 = u("\u25A0", "x");
+var le = u("◆", "*");
+var L2 = u("■", "x");
+var W2 = u("▲", "x");
+var C = u("◇", "o");
+var ue = u("┌", "T");
+var o = u("│", "|");
+var d2 = u("└", "—");
+var k2 = u("●", ">");
+var P2 = u("○", " ");
+var A2 = u("◻", "[•]");
+var T = u("◼", "[+]");
+var F = u("◻", "[ ]");
+var $e = u("▪", "•");
+var _2 = u("─", "-");
+var me = u("╮", "+");
+var de = u("├", "+");
+var pe = u("╯", "+");
+var q = u("●", "•");
+var D = u("◆", "*");
+var U = u("▲", "!");
+var K2 = u("■", "x");
 var b2 = (t) => {
   switch (t) {
     case "initial":
@@ -3254,7 +3259,7 @@ var M2 = { message: (t = "", { symbol: n = import_picocolors4.default.gray(o) } 
 } };
 var J2 = `${import_picocolors4.default.gray(o)}  `;
 var Y2 = ({ indicator: t = "dots" } = {}) => {
-  const n = V2 ? ["\u25D2", "\u25D0", "\u25D3", "\u25D1"] : ["\u2022", "o", "O", "0"], r2 = V2 ? 80 : 120, i = process.env.CI === "true";
+  const n = V2 ? ["◒", "◐", "◓", "◑"] : ["•", "o", "O", "0"], r2 = V2 ? 80 : 120, i = process.env.CI === "true";
   let s, c, a = false, l2 = "", $2, g2 = performance.now();
   const p2 = (m2) => {
     const h2 = m2 > 1 ? "Something went wrong" : "Canceled";
@@ -3312,67 +3317,67 @@ var import_picocolors5 = __toESM(require_picocolors(), 1);
 async function promptInstallConfig(detected) {
   const initial = detectedToInitialValues(detected);
   const odooVersion = await ve({
-    message: "Odoo \u7248\u672C\uFF1F",
+    message: "Odoo 版本？",
     options: [
       { value: "14.0", label: "14.0", hint: "Legacy" },
       { value: "15.0", label: "15.0" },
-      { value: "16.0", label: "16.0", hint: "OWL2 + \u65B0 Asset Bundle" },
-      { value: "17.0", label: "17.0", hint: "\u63A8\u8350 \u2014 attrs \u5E9F\u5F03, Python 3.10+" },
-      { value: "18.0", label: "18.0", hint: "OWL3 + \u589E\u5F3A RBAC" },
-      { value: "19.0", label: "19.0", hint: "\u6700\u65B0 \u2014 OWL4 Signals, Vite, Python 3.12+" }
+      { value: "16.0", label: "16.0", hint: "OWL2 + 新 Asset Bundle" },
+      { value: "17.0", label: "17.0", hint: "推荐 — attrs 废弃, Python 3.10+" },
+      { value: "18.0", label: "18.0", hint: "OWL3 + 增强 RBAC" },
+      { value: "19.0", label: "19.0", hint: "最新 — OWL4 Signals, Vite, Python 3.12+" }
     ],
     initialValue: initial.odooVersion
   });
   if (pD(odooVersion)) {
-    xe("\u5B89\u88C5\u5DF2\u53D6\u6D88\u3002");
+    xe("安装已取消。");
     return null;
   }
   const edition = await ve({
-    message: "Odoo \u7248\u672C\u7C7B\u578B\uFF1F",
+    message: "Odoo 版本类型？",
     options: [
-      { value: "community", label: "Community (CE)", hint: "\u5F00\u6E90\u793E\u533A\u7248" },
-      { value: "enterprise", label: "Enterprise (EE)", hint: "\u4F01\u4E1A\u7248\uFF08\u9700\u8BB8\u53EF\u8BC1\uFF09" }
+      { value: "community", label: "Community (CE)", hint: "开源社区版" },
+      { value: "enterprise", label: "Enterprise (EE)", hint: "企业版（需许可证）" }
     ],
     initialValue: initial.edition
   });
   if (pD(edition)) {
-    xe("\u5B89\u88C5\u5DF2\u53D6\u6D88\u3002");
+    xe("安装已取消。");
     return null;
   }
   const pythonVersion = await ve({
-    message: "Python \u7248\u672C\uFF1F",
+    message: "Python 版本？",
     options: [
-      { value: "3.10", label: "Python 3.10", hint: "Odoo 17 \u6700\u4F4E\u8981\u6C42" },
+      { value: "3.10", label: "Python 3.10", hint: "Odoo 17 最低要求" },
       { value: "3.11", label: "Python 3.11" },
-      { value: "3.12", label: "Python 3.12", hint: "\u63A8\u8350 / Odoo 19 \u6700\u4F4E\u8981\u6C42" },
-      { value: "3.13", label: "Python 3.13", hint: "\u6700\u65B0" }
+      { value: "3.12", label: "Python 3.12", hint: "推荐 / Odoo 19 最低要求" },
+      { value: "3.13", label: "Python 3.13", hint: "最新" }
     ],
     initialValue: "3.12"
   });
   if (pD(pythonVersion)) {
-    xe("\u5B89\u88C5\u5DF2\u53D6\u6D88\u3002");
+    xe("安装已取消。");
     return null;
   }
   const database = await he({
-    message: "\u9ED8\u8BA4\u6570\u636E\u5E93\u540D\u79F0\uFF1F\uFF08\u53EF\u7559\u7A7A\uFF09",
+    message: "默认数据库名称？（可留空）",
     placeholder: "mydb",
     defaultValue: initial.database
   });
   if (pD(database)) {
-    xe("\u5B89\u88C5\u5DF2\u53D6\u6D88\u3002");
+    xe("安装已取消。");
     return null;
   }
   const features = await fe({
-    message: "\u542F\u7528\u54EA\u4E9B\u529F\u80FD\uFF1F",
+    message: "启用哪些功能？",
     options: [
-      { value: "auto_detect", label: "\u81EA\u52A8\u68C0\u6D4B Odoo \u9879\u76EE\u4E0A\u4E0B\u6587", hint: "\u63A8\u8350" },
-      { value: "security_audit", label: "\u5B89\u5168\u5BA1\u8BA1", hint: "\u626B\u63CF SQL \u6CE8\u5165\u3001sudo \u6EE5\u7528\u7B49" },
-      { value: "upgrade_checks", label: "\u5347\u7EA7\u5B89\u5168\u68C0\u67E5", hint: "\u7248\u672C\u5347\u7EA7\u517C\u5BB9\u6027\u63D0\u9192" }
+      { value: "auto_detect", label: "自动检测 Odoo 项目上下文", hint: "推荐" },
+      { value: "security_audit", label: "安全审计", hint: "扫描 SQL 注入、sudo 滥用等" },
+      { value: "upgrade_checks", label: "升级安全检查", hint: "版本升级兼容性提醒" }
     ],
     initialValues: ["auto_detect", "security_audit", "upgrade_checks"]
   });
   if (pD(features)) {
-    xe("\u5B89\u88C5\u5DF2\u53D6\u6D88\u3002");
+    xe("安装已取消。");
     return null;
   }
   return {
@@ -3389,75 +3394,75 @@ async function promptInstallConfig(detected) {
 // src/cli/tui-installer.ts
 async function runTuiInstaller(args, version) {
   if (!process.stdin.isTTY || !process.stdout.isTTY) {
-    console.error("\u9519\u8BEF\uFF1A\u4EA4\u4E92\u5F0F\u5B89\u88C5\u9700\u8981 TTY \u7EC8\u7AEF\u3002\u8BF7\u4F7F\u7528 --no-tui \u6A21\u5F0F\u3002");
+    console.error("错误：交互式安装需要 TTY 终端。请使用 --no-tui 模式。");
     return 1;
   }
   const detected = detectCurrentConfig();
   const isUpdate = detected.isInstalled;
-  Ie(import_picocolors5.default.bgCyan(import_picocolors5.default.white(isUpdate ? " oh-my-odoo \u2014 \u66F4\u65B0\u914D\u7F6E " : " oh-my-odoo \u2014 \u5B89\u88C5\u5411\u5BFC ")));
+  Ie(import_picocolors5.default.bgCyan(import_picocolors5.default.white(isUpdate ? " oh-my-odoo — 更新配置 " : " oh-my-odoo — 安装向导 ")));
   if (detected.hasOdooBin || detected.customModuleCount > 0) {
     const info = [];
     if (detected.odooVersion)
-      info.push(`\u7248\u672C: ${detected.odooVersion}`);
+      info.push(`版本: ${detected.odooVersion}`);
     if (detected.customModuleCount > 0)
-      info.push(`\u81EA\u5B9A\u4E49\u6A21\u5757: ${detected.customModuleCount}`);
+      info.push(`自定义模块: ${detected.customModuleCount}`);
     if (detected.database)
-      info.push(`\u6570\u636E\u5E93: ${detected.database}`);
+      info.push(`数据库: ${detected.database}`);
     if (info.length > 0) {
-      M2.info(`\u68C0\u6D4B\u5230 Odoo \u9879\u76EE: ${info.join(", ")}`);
+      M2.info(`检测到 Odoo 项目: ${info.join(", ")}`);
     }
   }
   if (isUpdate) {
-    M2.info("\u68C0\u6D4B\u5230\u5DF2\u6709\u914D\u7F6E\uFF0C\u5C06\u8FDB\u884C\u66F4\u65B0\u3002");
+    M2.info("检测到已有配置，将进行更新。");
   }
   const spinner = Y2();
-  spinner.start("\u68C0\u67E5 OpenCode \u5B89\u88C5\u72B6\u6001");
+  spinner.start("检查 OpenCode 安装状态");
   const installed = await isOpenCodeInstalled();
   const openCodeVersion = await getOpenCodeVersion();
   if (!installed) {
-    spinner.stop(`OpenCode \u672A\u5B89\u88C5 ${import_picocolors5.default.yellow("[!]")}`);
-    M2.warn("OpenCode \u672A\u627E\u5230\u3002\u63D2\u4EF6\u914D\u7F6E\u5C06\u88AB\u521B\u5EFA\uFF0C\u4F46\u4F60\u9700\u8981\u5148\u5B89\u88C5 OpenCode \u624D\u80FD\u4F7F\u7528\u3002");
-    Me(`\u5B89\u88C5 OpenCode: bun install -g opencode-ai
-\u6587\u6863: https://opencode.ai/docs`, "\u5B89\u88C5\u6307\u5357");
+    spinner.stop(`OpenCode 未安装 ${import_picocolors5.default.yellow("[!]")}`);
+    M2.warn("OpenCode 未找到。插件配置将被创建，但你需要先安装 OpenCode 才能使用。");
+    Me(`安装 OpenCode: bun install -g opencode-ai
+文档: https://opencode.ai/docs`, "安装指南");
   } else {
-    spinner.stop(`OpenCode ${openCodeVersion ?? ""} \u5DF2\u5B89\u88C5 ${import_picocolors5.default.green("[OK]")}`);
+    spinner.stop(`OpenCode ${openCodeVersion ?? ""} 已安装 ${import_picocolors5.default.green("[OK]")}`);
   }
   const config = await promptInstallConfig(detected);
   if (!config)
     return 1;
-  spinner.start(`\u6CE8\u518C ${PLUGIN_NAME} \u63D2\u4EF6\u5230 OpenCode \u914D\u7F6E`);
+  spinner.start(`注册 ${PLUGIN_NAME2} 插件到 OpenCode 配置`);
   const pluginResult = await addPluginToOpenCodeConfig(version);
   if (!pluginResult.success) {
-    spinner.stop(`\u6CE8\u518C\u5931\u8D25: ${pluginResult.error}`);
-    Se(import_picocolors5.default.red("\u5B89\u88C5\u5931\u8D25\u3002"));
+    spinner.stop(`注册失败: ${pluginResult.error}`);
+    Se(import_picocolors5.default.red("安装失败。"));
     return 1;
   }
-  spinner.stop(`\u63D2\u4EF6\u5DF2\u6CE8\u518C ${SYMBOLS.arrow} ${import_picocolors5.default.cyan(pluginResult.configPath)}`);
-  spinner.start(`\u5199\u5165 ${PLUGIN_NAME} \u914D\u7F6E\u6587\u4EF6`);
+  spinner.stop(`插件已注册 ${SYMBOLS.arrow} ${import_picocolors5.default.cyan(pluginResult.configPath)}`);
+  spinner.start(`写入 ${PLUGIN_NAME2} 配置文件`);
   const configResult = writeOdooConfig(config);
   if (!configResult.success) {
-    spinner.stop(`\u5199\u5165\u5931\u8D25: ${configResult.error}`);
-    Se(import_picocolors5.default.red("\u5B89\u88C5\u5931\u8D25\u3002"));
+    spinner.stop(`写入失败: ${configResult.error}`);
+    Se(import_picocolors5.default.red("安装失败。"));
     return 1;
   }
-  spinner.stop(`\u914D\u7F6E\u5DF2\u5199\u5165 ${SYMBOLS.arrow} ${import_picocolors5.default.cyan(configResult.configPath)}`);
-  Me(formatConfigSummary(config), isUpdate ? "\u66F4\u65B0\u5B8C\u6210" : "\u5B89\u88C5\u5B8C\u6210");
-  M2.success(import_picocolors5.default.bold(isUpdate ? "\u914D\u7F6E\u66F4\u65B0\u6210\u529F\uFF01" : "\u5B89\u88C5\u6210\u529F\uFF01"));
-  M2.message(`\u8FD0\u884C ${import_picocolors5.default.cyan("opencode")} \u5F00\u59CB\u4F7F\u7528\uFF01`);
-  Me(`\u53EF\u7528\u7684 Odoo \u4E13\u5C5E\u5DE5\u5177:
-` + `  ${import_picocolors5.default.cyan("odoo_module_scanner")}   \u626B\u63CF\u6240\u6709\u81EA\u5B9A\u4E49\u6A21\u5757
-` + `  ${import_picocolors5.default.cyan("odoo_upgrade_analyze")}  \u7248\u672C\u5347\u7EA7\u517C\u5BB9\u6027\u5206\u6790
-` + `  ${import_picocolors5.default.cyan("odoo_security_checker")} \u5B89\u5168\u5BA1\u8BA1
-` + `  ${import_picocolors5.default.cyan("odoo_scaffold")}         \u751F\u6210\u65B0\u6A21\u5757\u9AA8\u67B6
-` + `  ${import_picocolors5.default.cyan("odoo_config_validator")} \u9A8C\u8BC1 odoo.conf
-` + `  ${import_picocolors5.default.cyan("odoo_xml_validator")}    XML \u89C6\u56FE\u9A8C\u8BC1`, "\u53EF\u7528\u5DE5\u5177");
-  Se(import_picocolors5.default.green("oh-my-odoo \u5B89\u88C5\u5B8C\u6210\uFF01\u795D\u5F00\u53D1\u6109\u5FEB\uFF01"));
+  spinner.stop(`配置已写入 ${SYMBOLS.arrow} ${import_picocolors5.default.cyan(configResult.configPath)}`);
+  Me(formatConfigSummary(config), isUpdate ? "更新完成" : "安装完成");
+  M2.success(import_picocolors5.default.bold(isUpdate ? "配置更新成功！" : "安装成功！"));
+  M2.message(`运行 ${import_picocolors5.default.cyan("opencode")} 开始使用！`);
+  Me(`可用的 Odoo 专属工具:
+` + `  ${import_picocolors5.default.cyan("odoo_module_scanner")}   扫描所有自定义模块
+` + `  ${import_picocolors5.default.cyan("odoo_upgrade_analyze")}  版本升级兼容性分析
+` + `  ${import_picocolors5.default.cyan("odoo_security_checker")} 安全审计
+` + `  ${import_picocolors5.default.cyan("odoo_scaffold")}         生成新模块骨架
+` + `  ${import_picocolors5.default.cyan("odoo_config_validator")} 验证 odoo.conf
+` + `  ${import_picocolors5.default.cyan("odoo_xml_validator")}    XML 视图验证`, "可用工具");
+  Se(import_picocolors5.default.green("oh-my-odoo 安装完成！祝开发愉快！"));
   return 0;
 }
 
 // src/cli/install.ts
 async function install(args) {
-  return args.tui ? runTuiInstaller(args, PLUGIN_VERSION) : runCliInstaller(args, PLUGIN_VERSION);
+  return args.tui ? runTuiInstaller(args, PLUGIN_VERSION2) : runCliInstaller(args, PLUGIN_VERSION2);
 }
 
 // src/cli/doctor/checks/odoo-system.ts
