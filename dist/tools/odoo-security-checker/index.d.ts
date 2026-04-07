@@ -1,0 +1,1 @@
+export { createOdooSecurityChecker } from "./tools";

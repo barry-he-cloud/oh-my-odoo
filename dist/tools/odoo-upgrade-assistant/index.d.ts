@@ -1,0 +1,1 @@
+export { createOdooUpgradeAssistant } from "./tools";

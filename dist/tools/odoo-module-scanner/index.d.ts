@@ -1,0 +1,1 @@
+export { createOdooModuleScanner } from "./tools";

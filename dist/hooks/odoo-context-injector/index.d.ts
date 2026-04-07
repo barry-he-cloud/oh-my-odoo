@@ -1,0 +1,1 @@
+export { createOdooContextInjectorHook } from "./hook";
