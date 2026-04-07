@@ -97,14 +97,37 @@ opencode --version
 
 ### 3.2 安装 oh-my-odoo
 
-#### 方法一：交互式安装（推荐）
+#### 第一步：全局安装插件
 
 ```bash
-# 在 Odoo 项目根目录执行
+# 使用 bun 安装（推荐）
+bun add -g "git+ssh://git@github.com:barry-he-cloud/oh-my-odoo.git#main"
+
+# 或者使用 npm 安装
+npm install -g "git+ssh://git@github.com:barry-he-cloud/oh-my-odoo.git#main"
+
+# 如果没有 SSH key，可以用 HTTPS 方式
+bun add -g "git+https://github.com/barry-he-cloud/oh-my-odoo.git#main"
+```
+
+安装成功后验证：
+
+```bash
+oh-my-odoo --version
+# 应输出: 0.1.0
+```
+
+#### 第二步：在 Odoo 项目中配置（交互式，推荐）
+
+```bash
+# 进入你的 Odoo 项目根目录
+cd /path/to/your/odoo-project
+
+# 运行交互式安装向导
 bunx oh-my-odoo install
 ```
 
-安装脚本会自动：
+安装向导会自动：
 
 1. 检查 OpenCode 是否已安装
 2. 自动检测当前 Odoo 项目信息（版本、模块、数据库）
@@ -159,9 +182,7 @@ bunx oh-my-odoo install
 └  oh-my-odoo 安装完成！祝开发愉快！
 ```
 
-#### 方法二：非交互式安装
-
-适合 CI/CD 或脚本批量部署：
+#### 非交互式安装（适合 CI/CD）
 
 ```bash
 bunx oh-my-odoo install --no-tui \
@@ -171,17 +192,23 @@ bunx oh-my-odoo install --no-tui \
   --database=mydb
 ```
 
-#### 方法三：从 GitHub 全局安装
+#### 从源码安装（开发者）
+
+如果你想修改插件源码：
 
 ```bash
-# 使用 bun（推荐）
-bun add -g git+ssh://git@github.com:barry-he-cloud/oh-my-odoo.git
-
-# 或者使用 npm
-npm install -g git+ssh://git@github.com:barry-he-cloud/oh-my-odoo.git
+git clone git@github.com:barry-he-cloud/oh-my-odoo.git
+cd oh-my-odoo
+bun install && bun run build
 ```
 
-全局安装后，同样使用 `oh-my-odoo install` 进行项目配置。
+在 `.opencode/opencode.json` 中使用本地路径注册：
+
+```json
+{
+  "plugin": ["/path/to/oh-my-odoo/dist/index.js"]
+}
+```
 
 #### 方法四：从源码安装
 
