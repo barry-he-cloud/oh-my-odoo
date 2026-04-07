@@ -64,9 +64,114 @@
 
 ---
 
-## 安装方法
+## 安装与配置
 
-### 方法一：从 GitHub 安装（推荐）
+### 3.1 前提条件
+
+#### 系统要求
+
+```bash
+# 检查 Node.js 版本（需要 18+）
+node --version
+# v18.0.0 或更高
+
+# 检查 Bun 版本（推荐 1.0+）
+bun --version
+# 1.0.0 或更高
+
+# 如果未安装 Bun，执行以下命令
+curl -fsSL https://bun.sh/install | bash
+```
+
+#### OpenCode 安装
+
+oh-my-odoo 是 OpenCode 的插件，需要先安装 OpenCode：
+
+```bash
+# 全局安装 OpenCode
+bun install -g opencode-ai
+
+# 验证安装
+opencode --version
+```
+
+### 3.2 安装 oh-my-odoo
+
+#### 方法一：交互式安装（推荐）
+
+```bash
+# 在 Odoo 项目根目录执行
+bunx oh-my-odoo install
+```
+
+安装脚本会自动：
+
+1. 检查 OpenCode 是否已安装
+2. 自动检测当前 Odoo 项目信息（版本、模块、数据库）
+3. 交互式引导配置（Odoo 版本、版本类型、Python 版本等）
+4. 注册 `oh-my-odoo` 插件到 `.opencode/opencode.json`
+5. 生成 `.opencode/oh-my-odoo.jsonc` 配置文件
+
+安装过程示意：
+
+```
+┌  oh-my-odoo — 安装向导
+│
+◇  检测到 Odoo 项目: 版本: 17.0, 自定义模块: 12, 数据库: mydb
+│
+◇  OpenCode 1.2.27 已安装 [OK]
+│
+◆  Odoo 版本？
+│  ○ 14.0 (Legacy)
+│  ○ 15.0
+│  ○ 16.0 (OWL2 + 新 Asset Bundle)
+│  ● 17.0 (推荐 — attrs 废弃, Python 3.10+)
+│  ○ 18.0 (OWL3 + 增强 RBAC)
+│  ○ 19.0 (最新 — OWL4 Signals, Vite, Python 3.12+)
+│
+◆  Odoo 版本类型？
+│  ● Community (CE) — 开源社区版
+│  ○ Enterprise (EE) — 企业版
+│
+◆  Python 版本？
+│  ● Python 3.12 (推荐)
+│
+◆  默认数据库名称？
+│  mydb
+│
+◆  启用哪些功能？
+│  ◻ 自动检测 Odoo 项目上下文 (推荐)
+│  ◻ 安全审计 (扫描 SQL 注入、sudo 滥用等)
+│  ◻ 升级安全检查 (版本升级兼容性提醒)
+│
+◇  插件已注册 → .opencode/opencode.json
+◇  配置已写入 → .opencode/oh-my-odoo.jsonc
+│
+│  安装完成
+│  Odoo Version:    17.0
+│  Edition:         community
+│  Python:          3.12
+│  Database:        mydb
+│  Auto-detect:     enabled
+│  Security Audit:  enabled
+│  Upgrade Checks:  enabled
+│
+└  oh-my-odoo 安装完成！祝开发愉快！
+```
+
+#### 方法二：非交互式安装
+
+适合 CI/CD 或脚本批量部署：
+
+```bash
+bunx oh-my-odoo install --no-tui \
+  --odoo-version=17.0 \
+  --edition=community \
+  --python-version=3.12 \
+  --database=mydb
+```
+
+#### 方法三：从 GitHub 全局安装
 
 ```bash
 # 使用 bun（推荐）
@@ -76,47 +181,47 @@ bun add -g git+ssh://git@github.com:barry-he-cloud/oh-my-odoo.git
 npm install -g git+ssh://git@github.com:barry-he-cloud/oh-my-odoo.git
 ```
 
-### 方法二：从源码安装
+全局安装后，同样使用 `oh-my-odoo install` 进行项目配置。
+
+#### 方法四：从源码安装
 
 ```bash
-# 克隆仓库
 git clone git@github.com:barry-he-cloud/oh-my-odoo.git
 cd oh-my-odoo
-
-# 安装依赖
 bun install
-
-# 构建
 bun run build
 ```
 
-### 注册到 OpenCode
-
-在你的 Odoo 项目根目录创建或编辑 `.opencode/opencode.json`：
+从源码安装时，在 `.opencode/opencode.json` 中使用绝对路径注册：
 
 ```json
 {
-  "plugins": ["oh-my-odoo"]
+  "plugin": ["/path/to/oh-my-odoo/dist/index.js"]
 }
 ```
 
-如果是从源码安装，使用绝对路径：
-
-```json
-{
-  "plugins": ["/path/to/oh-my-odoo/dist/index.js"]
-}
-```
-
-### 验证安装
+### 3.3 验证安装
 
 ```bash
-# 检查系统环境
+# 检查系统环境（Python、PostgreSQL、odoo-bin 等）
 oh-my-odoo doctor
 
-# 查看插件信息
+# 查看插件信息和所有可用工具
 oh-my-odoo info
+
+# 查看版本
+oh-my-odoo --version
 ```
+
+### 3.4 更新配置
+
+已经安装过？可随时重新运行 install 更新配置：
+
+```bash
+bunx oh-my-odoo install
+```
+
+安装器会自动检测已有配置并以更新模式运行。
 
 ---
 
@@ -461,7 +566,20 @@ oh-my-odoo/
 │   │   ├── builtin-skills/            # 8 个内置 Skill
 │   │   └── builtin-commands/          # 斜杠命令模板
 │   ├── shared/                        # 通用工具（日志、JSONC、常量）
-│   └── cli/                           # CLI（doctor、info）
+│   └── cli/                           # CLI 命令
+│       ├── index.ts                   # CLI 入口（install/doctor/info）
+│       ├── install.ts                 # 安装分发（TUI/CLI）
+│       ├── tui-installer.ts           # 交互式 TUI 安装器
+│       ├── tui-install-prompts.ts     # TUI 交互提示
+│       ├── cli-installer.ts           # 非交互式安装器
+│       ├── install-validators.ts      # 参数校验与格式化
+│       ├── types.ts                   # 安装相关类型定义
+│       ├── config-manager/            # 配置管理
+│       │   ├── detect-current-config.ts   # 检测已有配置
+│       │   ├── add-plugin-to-opencode-config.ts  # 注册插件
+│       │   ├── write-config.ts        # 写入 oh-my-odoo.jsonc
+│       │   └── opencode-binary.ts     # OpenCode 二进制检测
+│       └── doctor/                    # 系统检查
 ├── bin/oh-my-odoo.js                  # CLI 入口
 ├── package.json
 ├── tsconfig.json
