@@ -66,14 +66,14 @@
 
 ## 安装方法
 
-### 方法一：npm 安装（推荐）
+### 方法一：从 GitHub 安装（推荐）
 
 ```bash
-# 全局安装
-npm install -g oh-my-odoo
+# 使用 bun（推荐）
+bun add -g git+ssh://git@github.com:barry-he-cloud/oh-my-odoo.git
 
-# 或者用 bun
-bun add -g oh-my-odoo
+# 或者使用 npm
+npm install -g git+ssh://git@github.com:barry-he-cloud/oh-my-odoo.git
 ```
 
 ### 方法二：从源码安装
